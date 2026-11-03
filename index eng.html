@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hong Kong’s bed business: capacity is expanding, affordability is shrinking | Data</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700;900&family=Source+Sans+3:wght@400;700&family=Source+Serif+4:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16293F;
+    --slate:#5B6573;
+    --rust:#C4502A;
+    --gray:#B5BAC1;
+    --navy:#1F3A5F;
+    --mist:#EEF2F6;
+    --paper:#FFFFFF;
+    --grid:#E4E7EB;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+  body{
+    background-color: #FFFFFF;
+    color:var(--ink);
+    font-family:"Source Sans 3","Noto Sans TC","PingFang HK","Microsoft JhengHei",sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--navy);text-decoration:none;border-bottom:1px solid rgba(31,58,95,.3);}
+  a:hover{border-bottom-color:var(--navy);}
+
+  .bg-scene {
+    position: fixed; bottom: 0; left: 0; width: 100%; height: 60vh;
+    min-height: 400px; perspective: 1200px; z-index: 0;
+    pointer-events: none; display: flex; align-items: flex-end;
+    justify-content: center; overflow: hidden;
+  }
+  .bg-houses {
+    width: 100%; height: 100%; transform-origin: bottom center;
+    will-change: transform, opacity;
+    transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+    opacity: 0.4;
+  }
+  .bg-houses svg { width: 100%; height: 100%; display: block; }
+
+  .progress{
+    position:fixed;top:0;left:0;height:3px;width:0;
+    background:linear-gradient(90deg,var(--rust),#E07A4F);
+    z-index:120; transition:width .08s linear;
+    box-shadow:0 0 6px rgba(196,80,42,.4);
+  }
+
+  .page{
+    max-width:1040px; margin:0 auto; padding:0 24px 96px;
+    position:relative; z-index:1;
+  }
+  .col{
+    max-width:640px; margin:0 auto;
+    position:relative; z-index:2;
+  }
+
+  .kicker{
+    font-size:13px; font-weight:700; letter-spacing:.1em;
+    color:var(--rust); margin:48px 0 16px;
+  }
+  h1{
+    font-family:"Noto Serif TC",serif; font-weight:900;
+    font-size:40px; line-height:1.32; letter-spacing:.01em;
+    margin-bottom:16px;
+  }
+  .subtitle{
+    font-family:"Noto Serif TC",serif; font-size:22px; line-height:1.55;
+    color:var(--slate); font-weight:700; margin-bottom:24px;
+    white-space: normal; max-width:36em;
+  }
+  .lede{
+    font-family:"Noto Serif TC",serif; font-size:20px; line-height:1.7;
+    color:var(--slate); font-weight:400; margin-bottom:36px;
+  }
+
+  .byline{
+    border-top:1px solid var(--grid); border-bottom:1px solid var(--grid);
+    padding:18px 0; margin-bottom:48px;
+    display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px 24px; font-size:14px; line-height:1.6; color:var(--slate);
+  }
+  .byline div{display:flex;gap:10px;}
+  .byline .k{flex:0 0 74px; color:var(--gray); font-weight:700; letter-spacing:.02em;}
+  .byline .v{color:var(--ink);}
+
+  .body-text p{
+    font-family:"Noto Sans TC",sans-serif; font-size:18px; line-height:1.9;
+    letter-spacing:.01em; margin-bottom:28px; text-align:left;
+  }
+  .body-text p:last-child{margin-bottom:0;}
+
+  h2{
+    font-family:"Noto Serif TC",serif; font-size:24px; line-height:1.5;
+    font-weight:700; margin:56px 0 24px; padding-top:26px;
+    border-top:1px solid var(--grid);
+  }
+
+  .mark{
+    background-image:linear-gradient(to top,rgba(196,80,42,.15) 0%,rgba(196,80,42,.15) 42%,transparent 42%);
+    background-repeat:no-repeat; background-position:left bottom;
+    background-size:0% 100%;
+    transition:background-size .9s cubic-bezier(.2,.7,.2,1) .35s;
+    font-weight:700; color:var(--ink);
+  }
+  .reveal.in .mark{background-size:100% 100%;}
+
+  .stats{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:12px;
+    margin:0 0 48px; padding:28px 0;
+    border-top:1px solid var(--grid); border-bottom:1px solid var(--grid);
+    position:relative;z-index:2;
+  }
+  .stat{text-align:left; padding-right:12px; border-right:1px solid var(--grid);}
+  .stat:last-child{border-right:0;}
+  .stat .num{
+    font-family:"Source Sans 3","Noto Sans TC",sans-serif;
+    font-size:34px; font-weight:700; line-height:1.1;
+    color:var(--rust); display:block; font-variant-numeric:tabular-nums;
+  }
+  .stat .lbl{
+    display:block; font-size:12px; color:var(--slate);
+    line-height:1.5; margin-top:6px;
+  }
+
+  figure.pic{margin:48px auto; width:100%;}
+  figure.pic .img-wrap{
+    border-radius:4px; overflow:hidden; background:var(--mist);
+    border:1px solid var(--grid);
+  }
+  figure.pic img{
+    width:100%; height:auto; display:block;
+    object-fit:cover; transition:transform .6s ease;
+  }
+  figure.pic:hover img{transform:scale(1.02);}
+  figure.pic figcaption{
+    margin-top:12px; font-family:"Noto Sans TC",sans-serif;
+    font-size:13px; line-height:1.6; color:var(--slate); padding-left:2px;
+  }
+  figure.pic .credit{
+    display:block; margin-top:4px; font-size:12px;
+    color:var(--gray); letter-spacing:.02em;
+  }
+
+  .fig-slot{
+    width:100%; min-height:360px; border:1px dashed #C9CED6; border-radius:4px;
+    background:repeating-linear-gradient(45deg,#FBFCFD,#FBFCFD 10px,#F6F8FA 10px,#F6F8FA 20px);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:8px; font-family:"Noto Sans TC",sans-serif;
+  }
+  .fig-slot span{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--slate);}
+  .fig-slot em{font-style:normal;font-size:12px;color:var(--gray);}
+
+  figure.wide{
+    position:relative; left:50%; transform:translateX(-50%);
+    width:min(1040px, calc(100vw - 32px)); margin:48px 0; z-index:2;
+  }
+  iframe.fig{
+    width:100%; border:0; display:block; background:#fff;
+    min-height:520px; opacity:0; transition:opacity .6s ease;
+    box-shadow:0 4px 24px rgba(0,0,0,0.03); border-radius:4px;
+  }
+  iframe.fig.loaded{opacity:1;}
+
+  .tool-block{
+    position:relative; left:50%; transform:translateX(-50%);
+    width:min(860px, calc(100vw - 32px));
+    margin:56px 0 40px;
+    background:linear-gradient(180deg,rgba(238,242,246,0.95),rgba(247,249,251,0.95));
+    padding:28px 24px 24px; border-radius:8px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.02);
+    backdrop-filter:blur(4px); z-index:2;
+  }
+  .tool-block .tool-head{max-width:640px; margin:0 auto 20px;}
+  .tool-block h3{
+    font-family:"Noto Serif TC",serif; font-size:21px; line-height:1.5;
+    font-weight:700; margin-bottom:8px;
+  }
+  .tool-block p{
+    font-family:"Noto Sans TC",sans-serif; font-size:15px;
+    line-height:1.7; color:var(--slate);
+  }
+  .tool-block iframe.fig{
+    background:transparent; min-height:640px; box-shadow:none;
+  }
+
+  .notes{
+    margin-top:64px; padding-top:32px;
+    border-top:2px solid var(--ink); position:relative;z-index:2;
+  }
+  .notes h2{
+    border-top:0; padding-top:0; margin-top:0;
+    font-size:21px; margin-bottom:20px;
+  }
+  .notes h3{
+    font-family:"Noto Sans TC",sans-serif; font-size:15px;
+    font-weight:700; letter-spacing:.04em; color:var(--ink);
+    margin:26px 0 8px;
+  }
+  .notes p, .notes li{
+    font-family:"Noto Sans TC",sans-serif; font-size:14px;
+    line-height:1.85; color:var(--slate);
+  }
+  .notes ul{list-style:none;padding:0;}
+  .notes li{padding-left:1.1em;text-indent:-1.1em;}
+  .notes li::before{content:"— ";}
+  .notes strong{color:var(--ink);font-weight:700;}
+  .notes ul.iv-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 24px;margin:8px 0 0;}
+  .notes ul.iv-list li{padding-left:0;text-indent:0;display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--grid);padding-bottom:4px;}
+  .notes ul.iv-list li::before{content:none;}
+  .notes ul.iv-list li i{font-style:normal;color:var(--gray);font-variant-numeric:tabular-nums;}
+  .notes ul.iv-list li .role{font-size:12px;color:var(--gray);font-weight:400;}
+  @media (max-width:600px){.notes ul.iv-list{grid-template-columns:1fr;}}
+
+  .srclist{list-style:none;padding:0;margin:2px 0 0;}
+  .srclist li{
+    padding-left:0;text-indent:0;font-size:13px;line-height:1.7;
+    padding:5px 0;border-bottom:1px solid #F4F6F8;color:var(--slate);
+  }
+  .srclist li:last-child{border-bottom:0;}
+  .srclist li::before{content:none;}
+  .srclist .tag{
+    display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;
+    color:var(--rust);background:#FBEDE7;border-radius:2px;padding:1px 6px;
+    margin-right:8px;vertical-align:1px;white-space:nowrap;
+  }
+  .srclist a{font-size:12px;word-break:break-all;color:var(--navy);}
+  .srclist .d{color:var(--gray);font-size:12px;}
+
+  .side-nav{
+    position:fixed; left:24px; top:50%; transform:translateY(-50%);
+    display:flex; flex-direction:column; gap:16px; z-index:80;
+  }
+  .side-nav a{
+    display:flex; align-items:center; gap:10px; border:0;
+    text-decoration:none; color:var(--gray); font-size:12px;
+  }
+  .side-nav a .house-icon{
+    width:24px; height:24px; fill:none; stroke:var(--gray);
+    stroke-width:1.5; stroke-linejoin:round; transition:all .25s;
+    background:var(--paper); border-radius:50%; padding:4px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.05);
+  }
+  .side-nav a em{
+    font-style:normal; font-size:12px; color:var(--slate);
+    font-weight:700; opacity:0; transform:translateX(-6px);
+    transition:all .25s; white-space:nowrap;
+  }
+  .side-nav a:hover em, .side-nav a.active em{opacity:1;transform:none;}
+  .side-nav a.active .house-icon{
+    stroke:var(--paper); fill:var(--rust); background:var(--rust);
+    box-shadow:0 0 0 4px rgba(196,80,42,.15);
+  }
+
+  .to-top{
+    position:fixed; right:24px; bottom:24px; width:44px;height:44px;
+    border-radius:50%; border:1px solid var(--grid);
+    background:var(--paper); color:var(--ink); font-size:18px;
+    cursor:pointer; opacity:0; pointer-events:none;
+    transition:opacity .3s,transform .3s; z-index:90;
+    box-shadow:0 4px 16px rgba(0,0,0,.06);
+  }
+  .to-top.show{opacity:1;pointer-events:auto;}
+  .to-top:hover{transform:translateY(-3px);}
+
+  .reveal{
+    opacity:0; transform:translateY(24px);
+    transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1);
+    will-change:opacity,transform;
+  }
+  .reveal.in{opacity:1;transform:none;}
+  figure.wide.reveal{transform:translateX(-50%) translateY(24px);}
+  figure.wide.reveal.in{transform:translateX(-50%) translateY(0);}
+  .tool-block.reveal{transform:translateX(-50%) translateY(24px);}
+  .tool-block.reveal.in{transform:translateX(-50%) translateY(0);}
+
+  @media (max-width:1100px){
+    .side-nav{display:none;}
+  }
+  @media (max-width:768px){
+    .page{padding:0 18px 72px;}
+    h1{font-size:28px;line-height:1.35;}
+    .subtitle{font-size:18px;line-height:1.5;white-space:normal;}
+    .lede{font-size:18px;line-height:1.7;}
+    .kicker{margin-top:40px;}
+    .body-text p{font-size:17px;line-height:1.9;}
+    h2{font-size:21px;line-height:1.5;margin:44px 0 20px;}
+    .byline{grid-template-columns:1fr;gap:6px;}
+    .byline .k{flex:0 0 68px;}
+    figure.wide{width:calc(100vw - 20px);margin:36px 0;}
+    .tool-block{width:calc(100vw - 20px);padding:22px 16px;}
+    .tool-block h3{font-size:19px;}
+    .notes h2{font-size:19px;}
+    .stats{grid-template-columns:repeat(2,1fr);gap:20px 12px;}
+    .stat:nth-child(2n){border-right:0;}
+    .stat .num{font-size:26px;}
+    .bg-scene{height: 40vh;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-scene" id="bgScene" aria-hidden="true">
+  <div class="bg-houses" id="bgHouses">
+    <svg viewBox="0 0 1440 500" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(80, 180)">
+        <polygon points="0,0 100,0 100,300 0,300" fill="#F3DAD3"/>
+        <polygon points="100,0 115,-15 115,285 100,300" fill="#C4502A"/>
+        <polygon points="0,0 15,-15 115,-15 100,0" fill="#E7AB9A"/>
+        <rect x="15" y="20" width="20" height="25" fill="#C4502A" opacity="0.8"/>
+        <rect x="65" y="20" width="20" height="25" fill="#C4502A" opacity="0.8"/>
+        <rect x="15" y="70" width="20" height="25" fill="#C4502A" opacity="0.8"/>
+        <rect x="65" y="70" width="20" height="25" fill="#C4502A" opacity="0.8"/>
+        <rect x="15" y="120" width="20" height="25" fill="#C4502A" opacity="0.8"/>
+        <rect x="65" y="120" width="20" height="25" fill="#C4502A" opacity="0.8"/>
+        <rect x="15" y="170" width="20" height="25" fill="#C4502A" opacity="0.8"/>
+        <rect x="65" y="170" width="20" height="25" fill="#C4502A" opacity="0.8"/>
+        <rect x="45" y="0" width="4" height="300" fill="#C4502A" opacity="0.3"/>
+        <rect x="20" y="-25" width="30" height="25" fill="#F3DAD3"/>
+        <polygon points="20,-25 35,-35 50,-25" fill="#E7AB9A"/>
+      </g>
+      <g transform="translate(220, 100)">
+        <polygon points="0,0 80,0 80,380 0,380" fill="#F3DAD3"/>
+        <polygon points="80,0 100,-20 100,360 80,380" fill="#C4502A"/>
+        <polygon points="0,0 20,-20 100,-20 80,0" fill="#E7AB9A"/>
+        <rect x="15" y="20" width="15" height="30" fill="#C4502A" opacity="0.7"/>
+        <rect x="50" y="20" width="15" height="30" fill="#C4502A" opacity="0.7"/>
+        <rect x="15" y="70" width="15" height="30" fill="#C4502A" opacity="0.7"/>
+        <rect x="50" y="70" width="15" height="30" fill="#C4502A" opacity="0.7"/>
+        <rect x="15" y="120" width="15" height="30" fill="#C4502A" opacity="0.7"/>
+        <rect x="50" y="120" width="15" height="30" fill="#C4502A" opacity="0.7"/>
+        <rect x="15" y="170" width="15" height="30" fill="#C4502A" opacity="0.7"/>
+        <rect x="50" y="170" width="15" height="30" fill="#C4502A" opacity="0.7"/>
+        <rect x="15" y="220" width="15" height="30" fill="#C4502A" opacity="0.7"/>
+        <rect x="50" y="220" width="15" height="30" fill="#C4502A" opacity="0.7"/>
+        <rect x="0" y="100" width="10" height="15" fill="#E7AB9A"/>
+        <rect x="0" y="200" width="10" height="15" fill="#E7AB9A"/>
+        <rect x="80" y="150" width="10" height="15" fill="#C4502A"/>
+      </g>
+      <g transform="translate(360, 160)">
+        <polygon points="0,0 120,0 120,320 0,320" fill="#F3DAD3"/>
+        <polygon points="120,0 140,-20 140,300 120,320" fill="#C4502A"/>
+        <polygon points="0,0 20,-20 140,-20 120,0" fill="#E7AB9A"/>
+        <rect x="20" y="20" width="25" height="20" fill="#C4502A" opacity="0.6"/>
+        <rect x="70" y="20" width="25" height="20" fill="#C4502A" opacity="0.6"/>
+        <rect x="20" y="60" width="25" height="20" fill="#C4502A" opacity="0.6"/>
+        <rect x="70" y="60" width="25" height="20" fill="#C4502A" opacity="0.6"/>
+        <rect x="20" y="100" width="25" height="20" fill="#C4502A" opacity="0.6"/>
+        <rect x="70" y="100" width="25" height="20" fill="#C4502A" opacity="0.6"/>
+        <rect x="20" y="140" width="25" height="20" fill="#C4502A" opacity="0.6"/>
+        <rect x="70" y="140" width="25" height="20" fill="#C4502A" opacity="0.6"/>
+        <polygon points="20,0 20,-15 50,-15 50,-30 90,-30 90,-15 120,-15 120,0" fill="#E7AB9A"/>
+        <rect x="40" y="-30" width="10" height="15" fill="#C4502A"/>
+        <rect x="70" y="-30" width="10" height="15" fill="#C4502A"/>
+      </g>
+      <g transform="translate(530, 120)">
+        <polygon points="0,0 140,0 140,360 0,360" fill="#F3DAD3"/>
+        <polygon points="140,0 160,-20 160,340 140,360" fill="#C4502A"/>
+        <polygon points="0,0 20,-20 160,-20 140,0" fill="#E7AB9A"/>
+        <rect x="20" y="30" width="20" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="60" y="30" width="20" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="100" y="30" width="20" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="20" y="80" width="20" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="60" y="80" width="20" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="100" y="80" width="20" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="20" y="130" width="20" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="60" y="130" width="20" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="100" y="130" width="20" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="135" y="20" width="4" height="330" fill="#C4502A" opacity="0.4"/>
+        <rect x="10" y="50" width="4" height="300" fill="#C4502A" opacity="0.4"/>
+      </g>
+      <g transform="translate(710, 60)">
+        <polygon points="0,0 100,0 100,420 0,420" fill="#F3DAD3"/>
+        <polygon points="100,0 120,-20 120,400 100,420" fill="#C4502A"/>
+        <polygon points="0,0 20,-20 120,-20 100,0" fill="#E7AB9A"/>
+        <rect x="15" y="20" width="15" height="25" fill="#C4502A" opacity="0.7"/>
+        <rect x="45" y="20" width="15" height="25" fill="#C4502A" opacity="0.7"/>
+        <rect x="75" y="20" width="15" height="25" fill="#C4502A" opacity="0.7"/>
+        <rect x="15" y="70" width="15" height="25" fill="#C4502A" opacity="0.7"/>
+        <rect x="45" y="70" width="15" height="25" fill="#C4502A" opacity="0.7"/>
+        <rect x="75" y="70" width="15" height="25" fill="#C4502A" opacity="0.7"/>
+        <rect x="15" y="120" width="15" height="25" fill="#C4502A" opacity="0.7"/>
+        <rect x="45" y="120" width="15" height="25" fill="#C4502A" opacity="0.7"/>
+        <rect x="75" y="120" width="15" height="25" fill="#C4502A" opacity="0.7"/>
+        <rect x="30" y="-40" width="40" height="40" fill="#F3DAD3"/>
+        <polygon points="30,-40 50,-55 70,-40" fill="#E7AB9A"/>
+        <rect x="48" y="-70" width="4" height="30" fill="#C4502A"/>
+      </g>
+      <g transform="translate(850, 200)">
+        <polygon points="0,0 110,0 110,280 0,280" fill="#F3DAD3"/>
+        <polygon points="110,0 130,-20 130,260 110,280" fill="#C4502A"/>
+        <polygon points="0,0 20,-20 130,-20 110,0" fill="#E7AB9A"/>
+        <rect x="20" y="20" width="20" height="30" fill="#C4502A" opacity="0.6"/>
+        <rect x="70" y="20" width="20" height="30" fill="#C4502A" opacity="0.6"/>
+        <rect x="20" y="70" width="20" height="30" fill="#C4502A" opacity="0.6"/>
+        <rect x="70" y="70" width="20" height="30" fill="#C4502A" opacity="0.6"/>
+        <rect x="20" y="120" width="20" height="30" fill="#C4502A" opacity="0.6"/>
+        <rect x="70" y="120" width="20" height="30" fill="#C4502A" opacity="0.6"/>
+        <rect x="0" y="200" width="15" height="15" fill="#E7AB9A"/>
+        <rect x="0" y="215" width="30" height="15" fill="#E7AB9A"/>
+      </g>
+      <g transform="translate(1000, 100)">
+        <polygon points="0,0 160,0 160,380 0,380" fill="#F3DAD3"/>
+        <polygon points="160,0 180,-20 180,360 160,380" fill="#C4502A"/>
+        <polygon points="0,0 20,-20 180,-20 160,0" fill="#E7AB9A"/>
+        <rect x="20" y="20" width="25" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="65" y="20" width="25" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="110" y="20" width="25" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="20" y="60" width="25" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="65" y="60" width="25" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="110" y="60" width="25" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="20" y="100" width="25" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="65" y="100" width="25" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="110" y="100" width="25" height="20" fill="#C4502A" opacity="0.5"/>
+        <rect x="15" y="0" width="3" height="380" fill="#C4502A" opacity="0.3"/>
+      </g>
+      <g transform="translate(1200, 180)">
+        <polygon points="0,0 90,0 90,300 0,300" fill="#F3DAD3"/>
+        <polygon points="90,0 110,-20 110,280 90,300" fill="#C4502A"/>
+        <polygon points="0,0 20,-20 110,-20 90,0" fill="#E7AB9A"/>
+        <rect x="15" y="20" width="15" height="30" fill="#C4502A" opacity="0.7"/>
+        <rect x="55" y="20" width="15" height="30" fill="#C4502A" opacity="0.7"/>
+        <rect x="15" y="70" width="15" height="30" fill="#C4502A" opacity="0.7"/>
+        <rect x="55" y="70" width="15" height="30" fill="#C4502A" opacity="0.7"/>
+        <rect x="15" y="120" width="15" height="30" fill="#C4502A" opacity="0.7"/>
+        <rect x="55" y="120" width="15" height="30" fill="#C4502A" opacity="0.7"/>
+        <polygon points="20,0 20,-15 40,-15 40,-30 70,-30 70,-15 90,-15 90,0" fill="#E7AB9A"/>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<div class="progress" id="progress"></div>
+
+<nav class="side-nav" aria-label="Section navigation">
+  <a href="#sec1">
+    <svg class="house-icon" viewBox="0 0 24 24"><path d="M12 3 L2 11 L4 13 L4 21 L20 21 L20 13 L22 11 L12 3 Z"/></svg>
+    <em>Expansion</em>
+  </a>
+  <a href="#sec2">
+    <svg class="house-icon" viewBox="0 0 24 24"><path d="M12 3 L2 11 L4 13 L4 21 L20 21 L20 13 L22 11 L12 3 Z"/></svg>
+    <em>Beds</em>
+  </a>
+  <a href="#sec3">
+    <svg class="house-icon" viewBox="0 0 24 24"><path d="M12 3 L2 11 L4 13 L4 21 L20 21 L20 13 L22 11 L12 3 Z"/></svg>
+    <em>Universities</em>
+  </a>
+  <a href="#sec4">
+    <svg class="house-icon" viewBox="0 0 24 24"><path d="M12 3 L2 11 L4 13 L4 21 L20 21 L20 13 L22 11 L12 3 Z"/></svg>
+    <em>Rents</em>
+  </a>
+  <a href="#sec5">
+    <svg class="house-icon" viewBox="0 0 24 24"><path d="M12 3 L2 11 L4 13 L4 21 L20 21 L20 13 L22 11 L12 3 Z"/></svg>
+    <em>Gap</em>
+  </a>
+  <a href="#sec6">
+    <svg class="house-icon" viewBox="0 0 24 24"><path d="M12 3 L2 11 L4 13 L4 21 L20 21 L20 13 L22 11 L12 3 Z"/></svg>
+    <em>Choices</em>
+  </a>
+</nav>
+
+<main class="page">
+
+  <div class="col">
+    <div class="kicker">【Data】</div>
+
+    <h1>Hong Kong’s bed business: capacity is expanding, affordability is shrinking</h1>
+
+    <p class="subtitle">Behind the HK$2.3 billion acquisition: beyond the overall shortfall, pressure on accommodation costs under expanded enrolment raises concerns about what students can pay</p>
+
+    <div class="byline">
+      <div><span class="k">Text</span><span class="v">Yang Han, Zhou Ju</span></div>
+      <div><span class="k">Graphics</span><span class="v">Cai Yunfei, Yu Ziqi</span></div>
+      <div><span class="k">Web</span><span class="v">Li Jiawei, Leung Wing-tung, Wang Zhaoyi</span></div>
+      <div><span class="k">Fact-checking</span><span class="v">Cai Yunfei, Leung Wing-tung</span></div>
+      <div><span class="k">Editor</span><span class="v">Wang Yue</span></div>
+      <div><span class="k">Published</span><span class="v">November 3, 2026</span></div>
+    </div>
+  </div>
+
+  <!-- Interactive tool -->
+  <div class="tool-block">
+    <div class="tool-head">
+      <h3>Interactive: Same monthly rent, how different are a private flat and student accommodation?</h3>
+      <p>Choose a district and enter a monthly budget to see how much space and how many beds that money buys in a private flat versus student accommodation. Figures are estimates from 2026 public listings and media quotations, for reference only.</p>
+    </div>
+    <iframe class="fig" src="game.html" title="Same monthly rent: how different are private flats and student accommodation?" loading="lazy"></iframe>
+  </div>
+
+  <!-- Key numbers -->
+  <div class="stats">
+    <div class="stat">
+      <span class="num" data-to="79300" data-decimals="0" data-suffix="">0</span>
+      <span class="lbl">Non-local students<br>2024/25 academic year</span>
+    </div>
+    <div class="stat">
+      <span class="num" data-to="45.5" data-decimals="1" data-suffix="%">0</span>
+      <span class="lbl">Two-year increase<br>2022/23–2024/25</span>
+    </div>
+    <div class="stat">
+      <span class="num" data-to="13500" data-decimals="0" data-suffix="">0</span>
+      <span class="lbl">Government target<br>new hostel places</span>
+    </div>
+    <div class="stat">
+      <span class="num" data-to="23200" data-decimals="0" data-suffix="">0</span>
+      <span class="lbl">Market-planned<br>beds</span>
+    </div>
+  </div>
+
+  <div class="col body-text">
+    <p>An investment firm spent <span class="mark">HK$2.3 billion</span> buying a hotel with <span class="mark">550</span> rooms, but does not plan to welcome any guests. On September 15, Singapore’s CapitaLand Investment agreed with Butterfly Hospitality to acquire the Ibis Hong Kong Central and Sheung Wan hotel and convert it into student accommodation. If completed, it will be the largest investment in a Hong Kong hotel-to-student-accommodation conversion since the second half of 2024.</p>
+  </div>
+
+  <div class="col">
+    <figure class="pic reveal">
+      <div class="img-wrap">
+        <img src="ibis.jpeg" alt="Exterior night view of Ibis Hong Kong Central and Sheung Wan" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg width=%22600%22 height=%22400%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Crect width=%22100%25%22 height=%22100%25%22 fill=%22%23EEF2F6%22/%3E%3Ctext x=%2250%25%22 y=%2248%25%22 font-family=%22sans-serif%22 font-size=%2216%22 fill=%22%235B6573%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3EImage placeholder | Ibis Hong Kong Central and Sheung Wan%3C/text%3E%3Ctext x=%2250%25%22 y=%2258%25%22 font-family=%22sans-serif%22 font-size=%2212%22 fill=%22%23B5BAC1%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3EPlace ibis.jpeg in the same folder%3C/text%3E%3C/svg%3E'">
+      </div>
+      <figcaption>
+        The Ibis hotel in Central and Sheung Wan, which CapitaLand Investment plans to convert into student accommodation.
+        <span class="credit">Photo: Caixin</span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="col body-text">
+    <p>Before this, Centaline Investment, China Resources Longdation and JD.com were among the institutions that had already moved into Hong Kong’s student accommodation sector.</p>
+    <p>But an expansion in bed supply does not necessarily mean more options that students can afford. Who bears the cost of this round of conversions is a question worth asking after the enrolment expansion.</p>
+  </div>
+
+  <div class="col body-text">
+    <h2 id="sec1" data-sec>Non-local students surge, hostel competition reaches 6.0:1</h2>
+    <p>Chief Executive John Lee Ka-chiu proposed relaxing the non-local student cap in the 2023 Policy Address. From 2024/25, the cap on self-financing non-local students at government-funded institutions rose from 20 per cent to 40 per cent of local places, and will rise to 50 per cent from 2026/27. The 2024 Policy Address further proposed promoting the “Study in Hong Kong” brand.</p>
+    <p>Non-local students enrolled in full-time post-secondary programmes across Hong Kong rose from 54,500 in 2022/23 to <span class="mark">79,300</span> in 2024/25, an increase of nearly 25,000, or <span class="mark">45.5 per cent</span>, over two academic years.</p>
+    <p>Rising student numbers have directly pressured university hostel supply. Based on the latest student and hostel-place figures published on the eight universities’ websites, competition for on-campus places is intense across the board. The Hong Kong Polytechnic University (PolyU) faces the highest pressure, with a student-to-hostel-place ratio of about <span class="mark">6.0:1</span>; the Chinese University of Hong Kong (CUHK) is the least strained, at about <span class="mark">2.2:1</span>.</p>
+  </div>
+
+  <!-- Figure 0: Hostel supply falls short at Hong Kong's eight universities -->
+  <figure class="wide">
+    <iframe class="fig" src="fig0.html" title="Hostel supply falls short at Hong Kong's eight universities" loading="lazy"></iframe>
+  </figure>
+
+  <div class="col body-text">
+    <p>For postgraduates, the competition is harsher. Ma Cenzhi, who is studying for a taught master’s at HKU, said the university offered “very few” hostel places for postgraduates and allocated them by random draw. “The chance of winning is almost hopeless; it is very difficult.” Lu Xinyu, a CUHK master’s graduate, recalled that when she received her offer, the university had made clear it did not provide on-campus hostels for taught postgraduates, offering only a small number of approved off-campus places that students had to fill in a questionnaire to compete for and be allocated.</p>
+    <p>With accommodation competition intensifying, universities, the government and the market are all pushing to expand hostel supply.</p>
+  </div>
+
+  <div class="col">
+    <figure class="pic reveal">
+      <div class="img-wrap">
+        <img src="polyu-hostel.jpg" alt="PolyU student hostel exterior" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg width=%22600%22 height=%22400%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Crect width=%22100%25%22 height=%22100%25%22 fill=%22%23EEF2F6%22/%3E%3Ctext x=%2250%25%22 y=%2248%25%22 font-family=%22sans-serif%22 font-size=%2216%22 fill=%22%235B6573%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3EImage placeholder | PolyU student hostel%3C/text%3E%3Ctext x=%2250%25%22 y=%2258%25%22 font-family=%22sans-serif%22 font-size=%2212%22 fill=%22%23B5BAC1%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3EPlace polyu-hostel.jpg in the same folder%3C/text%3E%3C/svg%3E'">
+      </div>
+      <figcaption>
+        PolyU student hostel exterior.
+        <span class="credit">Photo: Ta Kung Wen Wei</span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <!-- Figure 1: Non-local student numbers across Hong Kong -->
+  <figure class="wide">
+    <iframe class="fig" src="fig1.html" title="Non-local student numbers across Hong Kong" loading="lazy"></iframe>
+  </figure>
+
+  <div class="col body-text">
+    <h2 id="sec2" data-sec>Government-funded universities build as relaxed rules encourage the market</h2>
+    <p>The government proposed in the 2023 Policy Address that funded institutions add about <span class="mark">13,500</span> hostel places in total by 2027. In practice, it provided one-off grants totalling about HK$10.3 billion through the Hostel Development Fund to six UGC-funded universities with hostel shortfalls for 15 student hostel projects. The Development Bureau disclosed in February 2026 that eight projects had been completed, providing about 7,800 student hostel places; the other seven were under construction, involving more than 6,500 places and expected to be completed over the next few years.</p>
+    <p>In July 2025, the Development Bureau and Education Bureau launched the Urban Student Hostel Scheme, waiving rezoning procedures to make it easier for private developers or operators to convert existing commercial buildings into student hostels. The 2025 Policy Address further extended the scheme to new-build and redevelopment projects, allowing student hostels to be built on private land or created through demolition and redevelopment, in addition to converting old commercial buildings.</p>
+    <p>As of February 4, 2026, the scheme had received 25 applications involving about 5,100 places, all confirmed eligible. Most projects are in urban districts such as Hung Hom, Kwun Tong, Sham Shui Po and Sheung Wan. Two involve new hostels on private land; the rest are conversions of existing buildings, mostly whole-building conversions.</p>
+    <p>In January 2026, the government also invited the market to submit expressions of interest for three formed sites in Kai Tak, Siu Lek Yuen in Sha Tin and Tung Chung East, initially estimated to provide about 4,500 places in total. This quarter, the Development Bureau formally included a site in Siu Lek Yuen, Sha Tin, in the land sale programme, expected to provide about 600 places.</p>
+    <p>Under the Urban Student Hostel Scheme, Sze Chun-fai, the under secretary for education, said the scheme allowed operational flexibility: applicants could be private developers, institutions or joint applicants; there were no hard rules on operating models, and operators could recruit residents themselves or partner with different post-secondary institutions.</p>
+    <p>Such public-private collaboration has precedents, but planning and lease controls previously kept projects isolated. In a written reply to Legco on February 4, 2026, the Education Bureau said that as non-local student numbers rose, the bureau and the University Grants Committee encouraged post-secondary institutions to adopt a multi-pronged approach and harness market forces to broaden accommodation options, including partnerships with private organisations to provide places.</p>
+  </div>
+
+  <div class="col">
+    <figure class="pic reveal">
+      <div class="img-wrap">
+        <img src="cityu-construction.jpg" alt="CityU Ma On Shan Pak Shek student hostel construction site" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg width=%22600%22 height=%22400%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Crect width=%22100%25%22 height=%22100%25%22 fill=%22%23EEF2F6%22/%3E%3Ctext x=%2250%25%22 y=%2248%25%22 font-family=%22sans-serif%22 font-size=%2216%22 fill=%22%235B6573%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3EImage placeholder | CityU Ma On Shan Pak Shek student hostel construction site%3C/text%3E%3Ctext x=%2250%25%22 y=%2258%25%22 font-family=%22sans-serif%22 font-size=%2212%22 fill=%22%23B5BAC1%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3EPlace cityu-construction.jpg in the same folder%3C/text%3E%3C/svg%3E'">
+      </div>
+      <figcaption>
+        CityU Ma On Shan Pak Shek student hostel construction site.
+        <span class="credit">Photo: Sing Tao Headline</span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <!-- Figure 2: Government and market add hostel beds -->
+  <figure class="wide">
+    <iframe class="fig" src="fig2.html" title="Government and market add hostel beds" loading="lazy"></iframe>
+  </figure>
+
+  <div class="col body-text">
+    <h2 id="sec3" data-sec>University self-built projects and market collaboration advance in parallel</h2>
+    <p>Universities have taken multiple measures to ease hostel pressure. On self-built projects, several are using the Hostel Development Fund to advance on-campus hostels. Examples include CityU’s Tat Hong Avenue project in Kowloon Tong, PolyU’s Ho Man Tin and Tat Hong Avenue projects, CUHK’s various college hostel projects and HKU’s Western Garden project, all expected to provide places over the next few years.</p>
+    <p>Besides self-built projects, some universities are increasing allocable places through rotation arrangements and partnerships with private operators. For example, CUHK continues its hostel rotation system to give more students a chance to experience hostel life; HKBU has partnered with China Resources Longdation, whose Brim Youth student accommodation in Kwai Chung will provide <span class="mark">205</span> places in 2026/27.</p>
+    <p>Despite universities’ efforts to expand capacity, on-campus places remain oversubscribed against the large intake from expanded enrolment. Because universities must prioritise freshmen, pressure on senior students to secure a hostel place is growing.</p>
+    <p>Li Huailin, a second-year PolyU student, said students had to spend a lot of time and energy joining activities to earn “hostel points” and raise their GPA to keep their places, and classmates applying to renew generally had more than 80 hostel points. He observed that Hoi Yuen Hall, which has the most mainland students, had about 300 residents, but only “about 30 to 40” third-year students seemed able to stay.</p>
+    <p>Competition to renew places can even depend on luck. Li Lianglingjia, a third-year HKBU student, said renewal quotas might be allocated by a percentage on each floor. “Some classmates with the same hostel points got to stay, while others did not. Those who did not may simply have been on a floor where too many people successfully returned.”</p>
+    <p>Most universities also set up off-campus accommodation information platforms or hotlines for students who are not allocated a place.</p>
+  </div>
+
+  <div class="col body-text">
+    <h2 id="sec4" data-sec>Private student accommodation supply rises, with rents sharply divided</h2>
+    <p>Under relaxed policy, the private market is speeding up. CapitaLand’s deal is not an isolated case. Since 2026, public transactions to convert Hong Kong hotels and commercial buildings into student accommodation have exceeded <span class="mark">HK$8 billion</span>, and Centaline Investment’s One Pace 117 in Tsim Sha Tsui has also entered the market.</p>
+  </div>
+
+  <div class="col">
+    <figure class="pic reveal">
+      <div class="img-wrap">
+        <img src="onepace-117.png" alt="Entrance exterior of One Pace 117, a private student accommodation in Tsim Sha Tsui" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg width=%22600%22 height=%22400%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Crect width=%22100%25%22 height=%22100%25%22 fill=%22%23EEF2F6%22/%3E%3Ctext x=%2250%25%22 y=%2248%25%22 font-family=%22sans-serif%22 font-size=%2216%22 fill=%22%235B6573%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3EImage placeholder | One Pace 117%3C/text%3E%3Ctext x=%2250%25%22 y=%2258%25%22 font-family=%22sans-serif%22 font-size=%2212%22 fill=%22%23B5BAC1%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3EPlace onepace-117.png in the same folder%3C/text%3E%3C/svg%3E'">
+      </div>
+      <figcaption>
+        One Pace 117, a private student accommodation in Tsim Sha Tsui.
+        <span class="credit">Photo: Campus One Communities</span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="col body-text">
+    <p>Such accommodation, purpose-built or converted by private developers or operators and rented to students at market rents, is called purpose-built student accommodation (PBSA), or private student housing. JLL data at the end of April 2026 showed Hong Kong’s major student accommodation had about <span class="mark">6,900</span> rentable beds, with occupancy at 98 to 100 per cent, nearly full; projects under construction and in planning would add about <span class="mark">16,300</span> beds.</p>
+    <p>Whether university hostels or private student accommodation, bed supply is increasing. But disclosed rents show clear divergence in market bed prices.</p>
+  </div>
+
+  <!-- Figure 3: High-premium beds cluster in core districts -->
+  <figure class="wide">
+    <iframe class="fig" src="fig3.html" title="High-premium beds cluster in core districts" loading="lazy"></iframe>
+  </figure>
+
+  <div class="col body-text">
+    <p>Single rooms (one bed) at One Pace 117 in Tsim Sha Tsui cost about <span class="mark">HK$18,000 to nearly HK$20,000</span> a month, while beds in twin rooms cost about HK$9,100. At One Pace 38 in Mid-Levels West, near HKU, single rooms cost about HK$16,000 to HK$18,000 a month, and twin-room beds about HK$11,300 to HK$14,000. At Brim Youth, an off-campus student hostel in Kwai Chung serving CityU and HKBU, single-room beds cost about HK$9,900 to HK$18,000, and twin-room beds about HK$6,800 to HK$7,900. By comparison, a private flat of about 431 sq ft in Kowloon rents for an average of only about <span class="mark">HK$17,000</span> a month — some single beds in student accommodation now cost more than an entire two-bedroom flat.</p>
+    <p>Not all new beds are in the high-price bracket. Centaline Investment’s One Hui Ju Kai Tak focuses on three- and four-person rooms, with beds starting at about HK$6,100 to HK$6,400 a month; some twin-room beds are quoted at around HK$8,500. Still, single rooms in core districts with en-suite bathrooms generally reach HK$14,000 to HK$20,000. A bed in a twin room in a university hostel, when converted to a monthly rent, is usually around <span class="mark">HK$2,500</span> — a significant gap with market student accommodation.</p>
+    <p>JLL data published in June 2026 showed that, as of the end of April 2026, rents in Hong Kong’s major student accommodation had risen steadily by nearly 10 per cent a year since 2022.</p>
+  </div>
+
+  <!-- Figure 4: One bed costs more than a two-bedroom flat -->
+  <figure class="wide">
+    <iframe class="fig" src="fig4.html" title="One bed costs more than a two-bedroom flat" loading="lazy"></iframe>
+  </figure>
+
+  <div class="col body-text">
+    <h2 id="sec5" data-sec>Beyond the overall shortfall, “affordable places” become a separate challenge</h2>
+    <p>How many hostel places is Hong Kong actually short of? Official and market estimates both offer answers, but their scopes differ.</p>
+    <p>A Legco reply on February 4, 2026, citing an earlier study, said Hong Kong was expected to face a shortfall of <span class="mark">120,000</span> student hostel places by 2028. JLL projected that the city’s PBSA bed shortfall would widen from <span class="mark">76,300</span> in 2025/26 to <span class="mark">147,200</span> in 2029/30, almost doubling, a net increase of more than 70,000.</p>
+    <p>The first covers all student hostel places; the second covers only purpose-built student accommodation. Both estimates focus on the numerical bed shortfall and do not reflect differences in the price structure of supply. Private student accommodation is priced at market rents and remains far above the roughly HK$2,500 monthly equivalent for a twin-room bed in a university hostel.</p>
+    <p>In a written Legco reply in October 2026, the Development Bureau said the government had no plans to set a specific target for the number of hostel places or to link annual supply to the number of additional students admitted under the relaxed non-local student cap. The authorities said the Urban Student Hostel Scheme aimed to remove barriers in development control procedures, and whether commercial buildings were eventually converted or redeveloped into student hostels was a commercial decision.</p>
+    <p>This raises another issue: the hostel shortage is not only a lack of beds but also a question of affordability. Adding beds may help narrow the overall supply gap, but more beds alone may not automatically solve students’ ability to pay.</p>
+
+    <h2 id="sec6" data-sec>With limited hostel guarantees, how do students choose?</h2>
+    <p>Hong Kong’s expanded enrolment policy has raised the non-local student cap, but the number of years of guaranteed hostel places has not been extended in tandem. Universities’ on-campus hostel guarantees generally cover only the first year or first two years of undergraduate study; postgraduates have no stable accommodation guarantee and face uncertainty over allocation.</p>
+    <p>As students move to higher years and lose their guarantee, they must look to the off-campus market. Paula Hui, a third-year student at Hong Kong Shue Yan University, recalled that after learning she could not continue living in a hostel, she prioritised student accommodation or long-stay hotels for safety reasons. But after searching online, she found most student accommodation expensive and long-stay hotels relatively remote, so she settled for a private flat that was closer and more reasonably priced.</p>
+    <p>Choosing a private flat often means handling complicated procedures and potential risks alone. Ma Yifan, an HKBU student, said renting off campus offered independent space, more privacy and greater comfort, but he had to contact agents himself, sift through complicated information and face certain risks. He also worried about missing the last MTR train when staying late for group work and had safety concerns about travelling late at night.</p>
+    <p>In Hong Kong’s private residential market, many landlords rarely accept short lets when renting to students, with most tenancies starting at one year, leaving students who need short-term accommodation to find other options. Sun Yuqiu, who studies at HKBU, needed only three months’ accommodation before going on exchange to Germany in the next semester, and eventually chose a long-stay hotel in Shek Mun at <span class="mark">HK$25,000</span> a month for a single room. She said that although the hotel was well equipped, the nearly 50-minute commute each way was too long. “If I needed a full year, I would definitely choose off-campus renting or student accommodation.”</p>
+    <p>To cut accommodation costs, some students look across the border. Li Huailin said that if he failed to get a hostel place later, he would move to Shenzhen. “Rents in Shenzhen are friendlier and living costs are lower. Even if commuting costs more, overall spending would still be much lower.”</p>
+    <p>Student accommodation generally offers flexible leases and full facilities, while private flats usually require long leases and large deposits. Long-stay hotels allow short stays but are priced high. With a hostel shortfall, whether rents are affordable has become a key consideration in students’ housing choices; the accommodation pressure brought by expanded enrolment has also left many students weighing the pros and cons of different options.</p>
+  </div>
+
+  <div class="col notes">
+
+    <h2>How we did this</h2>
+
+    <h3>Sources</h3>
+    <p style="margin-bottom:10px">The sources below are grouped by topic and correspond to the text and charts. Links point to the original sources at the time of verification.</p>
+
+    <ul class="srclist">
+      <li><span class="tag">Policy</span>2025 Policy Address, paragraph 137: cap on self-financing non-local students rises from 40 per cent to 50 per cent (from 2026/27)
+        <br><a href="https://www.policyaddress.gov.hk/2025/tc/p137.html" target="_blank" rel="noopener">policyaddress.gov.hk/2025/tc/p137.html</a></li>
+
+      <li><span class="tag">Policy</span>2023 Policy Address: about 13,500 new hostel places at funded institutions by 2027
+        <br><a href="https://www.info.gov.hk/gia/general/202312/06/P2023120600243.htm" target="_blank" rel="noopener">info.gov.hk/gia/general/202312/06/P2023120600243.htm</a></li>
+
+      <li><span class="tag">Official</span>Education Bureau paper to the Legco Panel on Education (February 2025): non-local student numbers
+        <br><a href="https://www.legco.gov.hk/yr2025/chinese/panels/ed/ed_ieh/papers/ed_ieh20250218cb3-315-1-c.pdf" target="_blank" rel="noopener">legco.gov.hk/yr2025/chinese/panels/ed/ed_ieh/papers/ed_ieh20250218cb3-315-1-c.pdf</a></li>
+
+      <li><span class="tag">Official</span>Legco Q15: supply of student hostels (February 4, 2026) — HK$10.3 billion fund, eight completed projects about 7,800 places, seven under construction about 6,500 places, Urban Student Hostel Scheme 25 applications about 5,100 places
+        <br><a href="https://www.info.gov.hk/gia/general/202602/04/P2026020400542.htm" target="_blank" rel="noopener">info.gov.hk/gia/general/202602/04/P2026020400542.htm</a></li>
+
+      <li><span class="tag">Official</span>Development Bureau press release: Hostel Development Fund project progress
+        <br><a href="https://www.devb.gov.hk/sc/publications_and_press_releases/press/index_id_15418.html" target="_blank" rel="noopener">devb.gov.hk/sc/publications_and_press_releases/press/index_id_15418.html</a></li>
+
+      <li><span class="tag">Official</span>Legco Q21: Urban Student Hostel Scheme (updated October 28, 2026)
+        <br><a href="https://www.info.gov.hk/gia/general/202610/28/P2026102800400.htm" target="_blank" rel="noopener">info.gov.hk/gia/general/202610/28/P2026102800400.htm</a></li>
+
+      <li><span class="tag">Official</span>Urban Student Hostel Scheme website; Government News: scheme consolidates education hub role (August 17, 2025)
+        <br><a href="https://www.studenthostel.gov.hk/" target="_blank" rel="noopener">studenthostel.gov.hk</a> ·
+        <a href="https://www.news.gov.hk/chi/2025/08/20250817/20250817_110302_057.html" target="_blank" rel="noopener">news.gov.hk</a></li>
+
+      <li><span class="tag">Universities</span>Student numbers and hostel places on the eight universities’ websites: HKU <a href="https://www.cpao.hku.hk/qstats/student-profiles" target="_blank" rel="noopener">CPAS</a>, CUHK <a href="https://www.iso.cuhk.edu.hk/images/publication/facts-and-figures/2024/html5/8/" target="_blank" rel="noopener">Facts &amp; Figures</a>, HKUST <a href="https://shrl.hkust.edu.hk/residential-halls/overview" target="_blank" rel="noopener">SHRL</a>, CityU <a href="https://www.cityu.edu.hk/fnf/facilities.htm" target="_blank" rel="noopener">Facilities</a>, PolyU <a href="https://www.polyu.edu.hk/sao/student-resources-and-support-section/residential-life/" target="_blank" rel="noopener">SAO</a>, Lingnan <a href="https://www.ln.edu.hk/osa/residential-life/student-hostel" target="_blank" rel="noopener">OSA</a>, EdUHK <a href="https://www.eduhk.hk/sao/en/info/student_halls/student_halls_quarters" target="_blank" rel="noopener">SAO</a>, HKBU <a href="https://www.hkbu.edu.hk/en/about/facts-figures.html" target="_blank" rel="noopener">Facts</a></li>
+
+      <li><span class="tag">Universities</span>HKU has about 7,800 hostel places (Wen Wei Po, September 1, 2025); CUHK United College rotation system and non-local student accommodation arrangements
+        <br><a href="https://www.wenweipo.com/a/202509/01/AP68b4e38ae4b0b3fbb35dbe93.html" target="_blank" rel="noopener">wenweipo.com</a> ·
+        <a href="https://www.uc.cuhk.edu.hk/sc/student-hostels/" target="_blank" rel="noopener">uc.cuhk.edu.hk</a></li>
+
+      <li><span class="tag">Data</span>Non-local students rose from 54,500 in 2022/23 to 79,300 in 2024/25, up 45.5 per cent (Wen Wei Po, December 30, 2025)
+        <br><a href="https://www.wenweipo.com/a/202512/30/AP6952e4d6e4b03b319788c03f.html" target="_blank" rel="noopener">wenweipo.com</a></li>
+
+      <li><span class="tag">Data</span>Eight universities’ hostel-place-to-student ratios (Midland ICI analysis)
+        <br><a href="https://www.midlandici.com.hk/ics/property/article/detail/47434" target="_blank" rel="noopener">midlandici.com.hk</a></li>
+
+      <li><span class="tag">Market</span>JLL: about 6,900 rentable beds, occupancy 98–100 per cent, about 16,300 under construction and planning, rents up nearly 10 per cent a year since 2022, shortfall 76,300→147,200 (June 2026)
+        <br><a href="https://www.jll.com/zh-hk/newsroom/hk-student-bed-shortage-set-to-approach-150000-by-2030" target="_blank" rel="noopener">jll.com/zh-hk</a> ·
+        <a href="https://www.jll.com/en-hk/newsroom/hk-student-bed-shortage-set-to-approach-150000-by-2030" target="_blank" rel="noopener">jll.com/en-hk</a></li>
+
+      <li><span class="tag">Market</span>Knight Frank data (PBSA average rents rose about 8 per cent a year in 2023–2025), cited by Hong Kong Business
+        <br><a href="https://hongkongbusiness.hk/residential/in-focus/hong-kong-student-bed-gap-hit-90000-2029" target="_blank" rel="noopener">Hong Kong Business, October 1, 2026</a></li>
+
+      <li><span class="tag">Deal</span>CapitaLand acquisition of Ibis Central and Sheung Wan: JSM advisory announcement, MarketScreener completion record, Mingtiandi, Dimsum Daily
+        <br><a href="https://www.jsm.com/news/2026/09/jsm-advises-capitaland-investment-on-acquisition-of-ibis-hong-kong-central-sheung-wan/" target="_blank" rel="noopener">jsm.com</a> ·
+        <a href="https://www.marketscreener.com/news/capitaland-investment-limited-completed-the-acquisition-of-ibis-hong-kong-central-and-sheung-wan-hot-ce785ad9d889f32c" target="_blank" rel="noopener">marketscreener.com</a> ·
+        <a href="https://www.mingtiandi.com/real-estate/finance/capitaland-buys-ibis-hotel-in-hong-kong-from-butterfly-hospitality/" target="_blank" rel="noopener">mingtiandi.com</a></li>
+
+      <li><span class="tag">Project</span>Centaline Investment’s One Pace 117 pre-leased 98 per cent, highest building rent HK$91 per sq ft (HK01, August 15, 2025)
+        <br><a href="https://www.hk01.com/%E5%9C%B0%E7%94%A2%E6%A8%93%E5%B8%82/60266899/" target="_blank" rel="noopener">hk01.com</a></li>
+
+      <li><span class="tag">Project</span>Centaline’s two projects for the new academic year total 855 beds; Kai Tak rents from HK$6,128 a month (HK01/am730/Sing Tao, June 1, 2026)
+        <br><a href="https://www.hk01.com/%E5%9C%B0%E7%94%A2%E6%A8%93%E5%B8%82/60355593/" target="_blank" rel="noopener">hk01.com</a> ·
+        <a href="https://www.am730.com.hk/article/1033646" target="_blank" rel="noopener">am730.com.hk</a> ·
+        <a href="https://www.stheadline.com/realtime-property/3578420/" target="_blank" rel="noopener">stheadline.com</a></li>
+
+      <li><span class="tag">Project</span>HKBU and China Resources Longdation partner on 205 places at Brim Youth (July 10, 2026)
+        <br><a href="https://www.hkbu.edu.hk/zh_hk/whats-new/press-release/2026/0710-hkbu-and-cr-longdation-sign-agreement-to-provide-units-at-brim-youth-to-meet-students-housing-demand.html" target="_blank" rel="noopener">hkbu.edu.hk</a></li>
+
+      <li><span class="tag">Rents</span>Rating and Valuation Department property market statistics: private domestic rent index (203.4 in April 2026, up 4.9 per cent year on year; 210.3 in August, up 4.89 per cent in the first eight months)
+        <br><a href="https://www.rvd.gov.hk/tc/publications/property_market_statistics.html" target="_blank" rel="noopener">rvd.gov.hk</a> ·
+        <a href="https://www.rvd.gov.hk/doc/en/statistics/full.pdf" target="_blank" rel="noopener">rvd.gov.hk/doc/en/statistics/full.pdf</a></li>
+
+      <li><span class="tag">Rents</span>Private flat rents around universities rise: Centaline Research CRI up 27.63 per cent over four years; Sing Tao “private student hostels rent out”; Ming Pao mainland students scramble for rents in Western District
+        <br><a href="https://hk.centanet.com/info/property-news" target="_blank" rel="noopener">hk.centanet.com</a> ·
+        <a href="https://www.stheadline.com/daily-hongkong/3622448/" target="_blank" rel="noopener">stheadline.com</a> ·
+        <a href="https://news.mingpao.com/pns/%E7%B6%93%E6%BF%9F/article/20260725/s00004/1784909948764/" target="_blank" rel="noopener">news.mingpao.com</a></li>
+
+      <li><span class="tag">Rents</span>Popular estates see summer rental scramble, expected rise of 5 to 10 per cent (Sing Tao, June 12, 2026); Tseung Kwan O estate rent per sq ft rise (Dimsum Daily)
+        <br><a href="https://www.stheadline.com/realtime-property/3582294/" target="_blank" rel="noopener">stheadline.com</a> ·
+        <a href="https://www.dimsumdaily.hk/tseung-kwan-o-flat-rents-beat-market-as-city-hits-record/" target="_blank" rel="noopener">dimsumdaily.hk</a></li>
+
+      <li><span class="tag">Gap</span>Shortfall of 120,000 student hostel places by 2028 (cited by Legco); after the Urban Student Hostel Scheme, 41 further applications for about 10,800 places (Sing Tao, 2026)
+        <br><a href="https://www.info.gov.hk/gia/general/202610/28/P2026102800400.htm" target="_blank" rel="noopener">info.gov.hk</a> ·
+        <a href="https://www.stheadline.com/realtime-property/3622521/" target="_blank" rel="noopener">stheadline.com</a></li>
+    </ul>
+
+    <h3>Method</h3>
+    <p>Non-local student numbers come from the Education Bureau’s paper to Legco. The on-campus hostel competition ratio is calculated by dividing the student numbers published on the eight universities’ websites (including self-financing and postgraduate programmes) by the number of hostel places, rounded to one decimal place. It differs from the “funded places” measure. Market student accommodation bed numbers and rents are compiled from each project’s public information; when comparing districts, monthly rent per bed is used rather than raw totals. The converted university hostel price is estimated by spreading the annual fee for a twin room at a local university over 12 months. The annual rises in Figure 4 come from three sources with different statistical periods and are for directional comparison only.</p>
+
+    <h3>Limitations</h3>
+    <ul>
+      <li>Complete official non-local student data are unavailable for 2025/26 to 2028/29, so Figure 1 leaves those years blank.</li>
+      <li>The 5,100 places under the Urban Student Hostel Scheme and 4,500 places on three sites are at application or expression-of-interest stage, not confirmed, and are not counted as committed supply. <strong>Note:</strong> by the Legco reply of October 28, 2026, applications had risen to 41, covering about 10,800 places, but not all had materialised, so the text retains the February figures and notes this here.</li>
+      <li>The CapitaLand Ibis deal has not completed; only the 550 rooms are known, and bed numbers and rents have not been disclosed.</li>
+      <li>In Figure 2, each small house represents 200 beds. The number of houses for projects under construction is the bed count divided by 200 and rounded, so it may differ slightly from actual bed numbers.</li>
+      <li>Rents in Figure 3 are publicly quoted ranges, not district averages; within the same project, single and shared rooms can differ by more than 100 per cent, so one project should not represent the whole city. The converted university hostel price spreads the twin-room fee over 12 months and excludes utilities and summer arrangements; arrangements vary widely between universities.</li>
+      <li>The hostel competition ratio divides total student numbers by hostel places and does not distinguish undergraduates from postgraduates; postgraduates’ actual chances of allocation are far lower than this average.</li>
+      <li>There is a lack of public microdata on actual occupancy and tenant composition in student accommodation, so no quantitative inference is made about “crowding out local tenants”.</li>
+    </ul>
+
+    <h3>Interviews</h3>
+    <p>The interviews with the seven people below are quoted in the text, with recordings on file. Interview dates are as follows:</p>
+    <ul class="iv-list">
+      <li><span>Ma Yifan <span class="role">HKBU student</span></span><i>October 28, 2026</i></li>
+      <li><span>Sun Yuqiu <span class="role">HKBU student</span></span><i>October 28, 2026</i></li>
+      <li><span>Li Huailin <span class="role">PolyU student</span></span><i>October 28, 2026</i></li>
+      <li><span>Lu Xinyu <span class="role">CUHK student</span></span><i>October 28, 2026</i></li>
+      <li><span>Ma Cenzhi <span class="role">HKU student</span></span><i>October 29, 2026</i></li>
+      <li><span>Li Lianglingjia <span class="role">HKBU student</span></span><i>October 29, 2026</i></li>
+      <li><span>Paula Hui <span class="role">Hong Kong Shue Yan University student</span></span><i>October 31, 2026</i></li>
+    </ul>
+
+    <h3>Central number</h3>
+    <p>79,300 non-local students (2024/25), 6.0:1 (PolyU student-to-hostel-place ratio), 2.2:1 (CUHK, lowest among the eight universities), 13,500 (government target for new hostel places) and 23,200 (market-planned beds), all recalculated from the original files.</p>
+
+    <h3>AI note</h3>
+    <p>Tools: DeepSeek for building the webpage and charts; GitHub for building the webpage.</p>
+    <p>Not used for: choosing the angle, writing any published text or producing any figure.</p>
+
+  </div>
+
+</main>
+
+<button class="to-top" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  /* ---------- 1. Subpage height reporting (works with postMessage from each figure page) ---------- */
+  window.addEventListener('message', function(e){
+    if(!e.data || e.data.type !== 'fig-height') return;
+    var h = Number(e.data.height);
+    if(!h || h < 200) return;
+    document.querySelectorAll('iframe.fig').forEach(function(f){
+      if(f.contentWindow === e.source){
+        f.style.height = Math.ceil(h) + 'px';
+        f.classList.add('loaded');
+      }
+    });
+  });
+
+  /* ---------- 2. Read height directly when same-origin (fallback if postMessage fails) ---------- */
+  function fitFrame(f){
+    try {
+      var d = f.contentDocument || f.contentWindow.document;
+      if(!d) return;
+      var h = Math.max(
+        d.documentElement ? d.documentElement.scrollHeight : 0,
+        d.body ? d.body.scrollHeight : 0
+      );
+      if(h > 200) f.style.height = h + 'px';
+    } catch(e){ /* silent fail on file:// or cross-origin; use inline fallback height */ }
+  }
+  document.querySelectorAll('iframe.fig').forEach(function(f){
+    f.addEventListener('load', function(){
+      f.classList.add('loaded');
+      fitFrame(f);
+      setTimeout(function(){ fitFrame(f); }, 300);
+      setTimeout(function(){ fitFrame(f); }, 1200);
+    });
+  });
+
+  /* ---------- 3. Background folding effect ---------- */
+  var bgHouses = document.getElementById('bgHouses');
+  var ticking = false;
+  function updateBg() {
+    var scrollY = window.scrollY;
+    var maxScroll = 600;
+    var progress = Math.max(0, Math.min(1, scrollY / maxScroll));
+    var easeProgress = 1 - Math.pow(1 - progress, 3);
+    var angle = easeProgress * 90;
+    var opacity = 0.4 * (1 - easeProgress);
+    bgHouses.style.transform = 'rotateX(' + angle + 'deg)';
+    bgHouses.style.opacity = Math.max(0, opacity);
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){
+    if(!ticking){ window.requestAnimationFrame(updateBg); ticking = true; }
+  }, {passive:true});
+  updateBg();
+
+  /* ---------- 4. Reading progress bar ---------- */
+  var progressBar = document.getElementById('progress');
+  function updateProgress(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var p = max > 0 ? h.scrollTop / max : 0;
+    progressBar.style.width = (p * 100) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  updateProgress();
+
+  /* ---------- 5. Back to top ---------- */
+  var toTop = document.getElementById('toTop');
+  window.addEventListener('scroll', function(){
+    toTop.classList.toggle('show', window.scrollY > 600);
+  }, {passive:true});
+  toTop.addEventListener('click', function(){
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  /* ---------- 6. Scroll reveal ---------- */
+  document.querySelectorAll('.lede, .body-text p, .body-text h2, .stats, .notes h2, .notes h3, .notes p, .notes ul, figure.wide, figure.pic, .tool-block').forEach(function(el){
+    el.classList.add('reveal');
+  });
+  var revealIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('in'); revealIO.unobserve(e.target); }
+    });
+  }, {rootMargin:'0px 0px -10% 0px', threshold:0.05});
+  document.querySelectorAll('.reveal').forEach(function(el){ revealIO.observe(el); });
+
+  /* ---------- 7. Animated numbers ---------- */
+  function animateNum(el){
+    if(el.dataset.done) return;
+    el.dataset.done = '1';
+    var to = parseFloat(el.dataset.to);
+    var dec = parseInt(el.dataset.decimals || '0', 10);
+    var suffix = el.dataset.suffix || '';
+    var dur = 1400;
+    var t0 = performance.now();
+    function tick(t){
+      var p = Math.min((t - t0) / dur, 1);
+      var e = 1 - Math.pow(1 - p, 3);
+      var val = (to * e).toFixed(dec);
+      if(dec === 0) val = Number(val).toLocaleString('en-GB');
+      el.textContent = val + suffix;
+      if(p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  var statIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.querySelectorAll('.num').forEach(animateNum);
+        statIO.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.3});
+  document.querySelectorAll('.stat').forEach(function(el){ statIO.observe(el); });
+
+  /* ---------- 8. Side navigation active state ---------- */
+  var secEls = document.querySelectorAll('[data-sec]');
+  var navLinks = document.querySelectorAll('.side-nav a');
+  var navIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var id = e.target.id;
+        navLinks.forEach(function(a){
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, {rootMargin:'-45% 0px -50% 0px'});
+  secEls.forEach(function(el){ navIO.observe(el); });
+
+  /* ---------- 9. Resize frames on window resize ---------- */
+  var rt;
+  window.addEventListener('resize', function(){
+    clearTimeout(rt);
+    rt = setTimeout(function(){
+      document.querySelectorAll('iframe.fig.loaded').forEach(fitFrame);
+    }, 300);
+  });
+})();
+</script>
+
+</body>
+</html>
